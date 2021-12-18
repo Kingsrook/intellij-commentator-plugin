@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: Gradle 7.2
+Build-JVM: 17.0.1 (Oracle Corporation 17.0.1+12-LTS-39)
+Version: 1.0-SNAPSHOT
+Build-Plugin: Gradle IntelliJ Plugin
+Build-Plugin-Version: 1.3.0
+Build-OS: Mac OS X 12.0.1 aarch64
+Build-SDK: IC-2021.3
+

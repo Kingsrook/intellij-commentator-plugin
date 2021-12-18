@@ -1,0 +1,38 @@
+<idea-plugin>
+    <id>com.kingsrook.commentator</id>
+    <name>Kingsrook Commentator</name>
+    <vendor email="contact@kingsrook.com" url="http://www.kingsrook.com">Kingsrook</vendor>
+
+    <description><![CDATA[
+    Tools for developers to make better looking comments in their code.
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <group id="Commentator.Menu" text="Commentator" description="Commentator menu">
+            <add-to-group group-id="CodeMenu" anchor="before" relative-to-action="InsertLiveTemplate"/>
+        </group>
+        <action id="CreateBlockComment" class="com.kingsrook.commentator.CreateBoxCommentAction" text="Commentator: Create Box Comment">
+            <keyboard-shortcut keymap="$default" first-keystroke="control F6"/>
+            <add-to-group group-id="Commentator.Menu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+        <action id="CreateWrappedBlockComment" class="com.kingsrook.commentator.CreateWrappedBoxCommentAction" text="Commentator: Create Wrapped Box Comment">
+            <keyboard-shortcut keymap="$default" first-keystroke="control shift F6"/>
+            <add-to-group group-id="Commentator.Menu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CreateBlockComment"/>
+        </action>
+        <action id="CreateHeaderComment" class="com.kingsrook.commentator.CreateHeaderCommentAction" text="Commentator: Create Header Comment">
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt F6"/>
+            <add-to-group group-id="Commentator.Menu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CreateWrappedBlockComment"/>
+        </action>
+    </actions>
+</idea-plugin>

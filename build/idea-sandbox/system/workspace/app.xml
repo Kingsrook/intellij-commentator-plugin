@@ -1,0 +1,459 @@
+<application>
+  <component name="PluginAdvertiserExtensions">
+    <plugins>
+      <entry key="*.fxml">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.jrxml">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ant">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xsd">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.rng">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.tld">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.jhm">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xul">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.pom">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xsl">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.wsdl">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xml">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.jnlp">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xslt">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.mf">
+        <plugin pluginId="com.intellij.java" pluginName="Java" bundled="true" />
+      </entry>
+      <entry key="*.zip">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.egg">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ear">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.klib">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ane">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.war">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.jar">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.apk">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.swc">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.txt">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key=".gitmodules">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.pptx">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xlsx">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.pdf">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ppt">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.vsd">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.chm">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.doc">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.mdb">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.hlp">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.odt">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xls">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.docx">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.iws">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.iml">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ipr">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.patch">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.diff">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ignore">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.rnc">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.htm">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.html">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.shtm">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.shtml">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.sht">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.xhtml">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.mod">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.dtd">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ent">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.elt">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.har">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.json">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.json5">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ndjson">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.jsonlines">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.ldjson">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.jsonl">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.regexp">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.dic">
+        <plugin pluginId="com.intellij" pluginName="IDEA CORE" bundled="true" />
+      </entry>
+      <entry key="*.yml">
+        <plugin pluginId="org.jetbrains.plugins.yaml" pluginName="YAML" bundled="true" />
+      </entry>
+      <entry key="*.yaml">
+        <plugin pluginId="org.jetbrains.plugins.yaml" pluginName="YAML" bundled="true" />
+      </entry>
+      <entry key=".editorconfig">
+        <plugin pluginId="org.editorconfig.editorconfigjetbrains" pluginName="EditorConfig" bundled="true" />
+      </entry>
+      <entry key="*.hgignore">
+        <plugin pluginId="hg4idea" pluginName="Mercurial" bundled="true" />
+      </entry>
+      <entry key="*.sh">
+        <plugin pluginId="com.jetbrains.sh" pluginName="Shell Script" bundled="true" />
+      </entry>
+      <entry key="*.bash">
+        <plugin pluginId="com.jetbrains.sh" pluginName="Shell Script" bundled="true" />
+      </entry>
+      <entry key="*.zsh">
+        <plugin pluginId="com.jetbrains.sh" pluginName="Shell Script" bundled="true" />
+      </entry>
+      <entry key="*.psd">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.xbm">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.tiff">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.bigtiff">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.bmp">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.gif">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.rgbe">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.tga">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.tif">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.ico">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.pgm">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.dcx">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.jpeg">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.wbmp">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.pam">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.jbig2">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.jpg">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.pcx">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.png">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.webp">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.ppm">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.icns">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.pnm">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.xpm">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.pbm">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.svg">
+        <plugin pluginId="com.intellij.platform.images" pluginName="Images" bundled="true" />
+      </entry>
+      <entry key="*.properties">
+        <plugin pluginId="com.intellij.properties" pluginName="Properties" bundled="true" />
+      </entry>
+      <entry key="*.java">
+        <plugin pluginId="com.intellij.java" pluginName="Java" bundled="true" />
+      </entry>
+      <entry key="*.class">
+        <plugin pluginId="com.intellij.java" pluginName="Java" bundled="true" />
+      </entry>
+      <entry key="*.snippet">
+        <plugin pluginId="com.intellij.java" pluginName="Java" bundled="true" />
+      </entry>
+      <entry key="*.kt">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.kts">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.knm">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.kjsm">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.kotlin_metadata">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.kotlin_builtins">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.kotlin_module">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key="*.def">
+        <plugin pluginId="org.jetbrains.kotlin" pluginName="Kotlin" bundled="true" />
+      </entry>
+      <entry key=".classpath">
+        <plugin pluginId="org.jetbrains.idea.eclipse" pluginName="Eclipse Interoperability" bundled="true" />
+      </entry>
+      <entry key=".project">
+        <plugin pluginId="org.jetbrains.idea.eclipse" pluginName="Eclipse Interoperability" bundled="true" />
+      </entry>
+      <entry key="*.form">
+        <plugin pluginId="com.intellij.uiDesigner" pluginName="UI Designer" bundled="true" />
+      </entry>
+      <entry key="*.smali">
+        <plugin pluginId="com.android.tools.idea.smali" pluginName="Smali Support" bundled="true" />
+      </entry>
+      <entry key="*.xpath">
+        <plugin pluginId="XPathView" pluginName="XPathView + XSLT" bundled="true" />
+      </entry>
+      <entry key="*.xpath2">
+        <plugin pluginId="XPathView" pluginName="XPathView + XSLT" bundled="true" />
+      </entry>
+      <entry key="*.md">
+        <plugin pluginId="org.intellij.plugins.markdown" pluginName="Markdown" bundled="true" />
+      </entry>
+      <entry key="*.markdown">
+        <plugin pluginId="org.intellij.plugins.markdown" pluginName="Markdown" bundled="true" />
+      </entry>
+      <entry key="*.gant">
+        <plugin pluginId="org.intellij.groovy" pluginName="Groovy" bundled="true" />
+      </entry>
+      <entry key="*.gy">
+        <plugin pluginId="org.intellij.groovy" pluginName="Groovy" bundled="true" />
+      </entry>
+      <entry key="*.groovy">
+        <plugin pluginId="org.intellij.groovy" pluginName="Groovy" bundled="true" />
+      </entry>
+      <entry key="*.gdsl">
+        <plugin pluginId="org.intellij.groovy" pluginName="Groovy" bundled="true" />
+      </entry>
+      <entry key="org.codehaus.groovy.runtime.ExtensionModule">
+        <plugin pluginId="org.intellij.groovy" pluginName="Groovy" bundled="true" />
+      </entry>
+      <entry key="logback.groovy">
+        <plugin pluginId="org.intellij.groovy" pluginName="Groovy" bundled="true" />
+      </entry>
+      <entry key="*.jql">
+        <plugin pluginId="com.intellij.tasks" pluginName="Task Management" bundled="true" />
+      </entry>
+      <entry key="*.config">
+        <plugin pluginId="Lombook Plugin" pluginName="Lombok" bundled="true" />
+      </entry>
+      <entry key="lombok.config">
+        <plugin pluginId="Lombook Plugin" pluginName="Lombok" bundled="true" />
+      </entry>
+      <entry key="*.gitignore">
+        <plugin pluginId="Git4Idea" pluginName="Git" bundled="true" />
+      </entry>
+      <entry key="exclude">
+        <plugin pluginId="Git4Idea" pluginName="Git" bundled="true" />
+      </entry>
+      <entry key="maven.config">
+        <plugin pluginId="org.jetbrains.idea.maven" pluginName="Maven" bundled="true" />
+      </entry>
+      <entry key="*.gradle">
+        <plugin pluginId="org.jetbrains.plugins.gradle" pluginName="Gradle-Java" bundled="true" />
+      </entry>
+      <entry key="*.aidl">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="proguard-*.txt">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="proguard.cfg">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.pro">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.rs">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.rsh">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.fs">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="multidex-config.txt">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.android_data_binding">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.9.png">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.dex">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.aar">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.aab">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.otf">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.ttf">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.trace">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.alloc">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.heapprofd">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.perfetto-trace">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.pftrace">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+      <entry key="*.li">
+        <plugin pluginId="org.jetbrains.android" pluginName="Android" bundled="true" />
+      </entry>
+    </plugins>
+  </component>
+</application>

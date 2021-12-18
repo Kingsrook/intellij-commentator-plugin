@@ -1,0 +1,10 @@
+<application>
+  <component name="PropertiesComponent">
+    <property name="CWM_LOGGING_VERSION" value="1" />
+    <property name="bundled.plugins.list.saved.version" value="IC-213.5744.223" />
+    <property name="eclipse.projects.detected" value="" />
+    <property name="fileTypeChangedCounter" value="1" />
+    <property name="fileTypeDetectors" value="com.android.tools.idea.profilers.capture.MemoryCaptureFileType$Detector:com.android.tools.idea.sqlite.fileType.SqliteFileTypeDetector:com.intellij.ide.scratch.ScratchFileServiceImpl$Detector:org.jetbrains.plugins.textmate.TextMateFileType$TextMateFileDetector" />
+    <property name="tasks.pass.word.conversion.enforced" value="true" />
+  </component>
+</application>
