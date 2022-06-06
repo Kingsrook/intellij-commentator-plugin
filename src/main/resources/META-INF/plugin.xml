@@ -1,38 +1,46 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.kingsrook.commentator</id>
-    <name>Kingsrook Commentator</name>
-    <vendor email="contact@kingsrook.com" url="http://www.kingsrook.com">Kingsrook</vendor>
+   <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+   <id>com.kingsrook.intellij-commentator-plugin</id>
 
-    <description><![CDATA[
-    Tools for developers to make better looking comments in their code.
-    ]]></description>
+   <!-- Public plugin name should be written in Title Case.
+        Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+   <name>Kingsrook Commentator</name>
 
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
-         on how to target different products -->
-    <depends>com.intellij.modules.platform</depends>
+   <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+   <vendor email="support@kingsrook.com" url="https://www.kingsrook.com">Kingsrook</vendor>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
+   <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+        Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+        Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+   <description><![CDATA[
+    IntelliJ plugin to provide code editing tools desired by the Kingsrook development team.
+    <p>Specifically:</p>
+    <ul>
+      <li>Single-button to create a flower-box comment.</li>
+    </ul>
+    <p>Future plans may include:</p>
+    <ul>
+      <li>Auto-line-re-wrapping for flower-box comments.</li>
+      <li>Class/Method headers.</li>
+      <li>Language-aware and/or user-customizable comment-characters</li>
+      <li>Smart-case substitutions (e.g., MyVar myVar s/my/your/ = YourVar yourVar).</li>
+    </ul>
+  ]]></description>
 
-    <actions>
-        <group id="Commentator.Menu" text="Commentator" description="Commentator menu">
-            <add-to-group group-id="CodeMenu" anchor="before" relative-to-action="InsertLiveTemplate"/>
-        </group>
-        <action id="CreateBlockComment" class="com.kingsrook.commentator.CreateBoxCommentAction" text="Commentator: Create Box Comment">
-            <keyboard-shortcut keymap="$default" first-keystroke="control F6"/>
-            <add-to-group group-id="Commentator.Menu" anchor="last"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-        </action>
-        <action id="CreateWrappedBlockComment" class="com.kingsrook.commentator.CreateWrappedBoxCommentAction" text="Commentator: Create Wrapped Box Comment">
-            <keyboard-shortcut keymap="$default" first-keystroke="control shift F6"/>
-            <add-to-group group-id="Commentator.Menu" anchor="last"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CreateBlockComment"/>
-        </action>
-        <action id="CreateHeaderComment" class="com.kingsrook.commentator.CreateHeaderCommentAction" text="Commentator: Create Header Comment">
-            <keyboard-shortcut keymap="$default" first-keystroke="control alt F6"/>
-            <add-to-group group-id="Commentator.Menu" anchor="last"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CreateWrappedBlockComment"/>
-        </action>
-    </actions>
+   <!-- Product and plugin compatibility requirements.
+        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+   <depends>com.intellij.modules.platform</depends>
+
+   <!-- Extension points defined by the plugin.
+        Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+   <extensions defaultExtensionNs="com.intellij">
+
+   </extensions>
+   <actions>
+      <action id="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" class="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" text="Create Box Comment" description="Creates a Box Comment (Flowerbox) out of the current line">
+         <add-to-group group-id="CodeMenu" anchor="first"/>
+         <keyboard-shortcut keymap="$default" first-keystroke="F6"/>
+      </action>
+   </actions>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package com.kingsrook.commentator;
+package com.kingsrook.intellijcommentatorplugin;
 
 
 import java.util.LinkedList;
@@ -12,13 +12,9 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import org.jetbrains.annotations.NotNull;
 
 
 /*******************************************************************************
- ** todo - (re)wrap mode.
- ** todo - method/class headers
- ** todo - other languages / comment chars
  **
  *******************************************************************************/
 public class CreateBoxCommentAction extends AnAction
@@ -157,7 +153,6 @@ public class CreateBoxCommentAction extends AnAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   @NotNull
    protected StringBuilder getReplacementText(String commentLinesText)
    {
       String[] lines = commentLinesText.split("\n");
