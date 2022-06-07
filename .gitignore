@@ -40,3 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Directory with ssl key & cert - not to share to git! ###
+.signature
+
