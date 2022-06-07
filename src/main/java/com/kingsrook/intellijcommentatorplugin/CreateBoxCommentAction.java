@@ -50,7 +50,7 @@ public class CreateBoxCommentAction extends AnAction
       // Get required data keys //
       ////////////////////////////
       final Project project = event.getProject();
-      final Editor editor = event.getData(CommonDataKeys.EDITOR);
+      final Editor  editor  = event.getData(CommonDataKeys.EDITOR);
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////
       // Set visibility only in case of existing project and editor and if some text in the editor is selected //
@@ -68,23 +68,23 @@ public class CreateBoxCommentAction extends AnAction
       //////////////////////////////////////////////
       // Get all the required data from data keys //
       //////////////////////////////////////////////
-      Editor editor = event.getRequiredData(CommonDataKeys.EDITOR);
+      Editor  editor  = event.getRequiredData(CommonDataKeys.EDITOR);
       Project project = event.getProject();
 
       ///////////////////////////////////////////
       // Access document, caret, and selection //
       ///////////////////////////////////////////
-      Document document = editor.getDocument();
+      Document       document       = editor.getDocument();
       SelectionModel selectionModel = editor.getSelectionModel();
 
       ////////////////////////////////////////////////////////////////
       // find the start & end lines, based on selection start & end //
       ////////////////////////////////////////////////////////////////
       int selectionStartOffset = selectionModel.getSelectionStart();
-      int selectionEndOffset = selectionModel.getSelectionEnd();
+      int selectionEndOffset   = selectionModel.getSelectionEnd();
 
       int selectionStartLine = document.getLineNumber(selectionStartOffset);
-      int selectionEndLine = document.getLineNumber(selectionEndOffset);
+      int selectionEndLine   = document.getLineNumber(selectionEndOffset);
 
       /////////////////////////////////////////////////////////////////////////
       // expand the selection upward as long as more comment lines are found //
@@ -92,7 +92,7 @@ public class CreateBoxCommentAction extends AnAction
       while(selectionStartLine > 1)
       {
          TextRange lineAboveSelectionTextRange = new TextRange(document.getLineStartOffset(selectionStartLine - 1), document.getLineEndOffset(selectionStartLine - 1));
-         String lineAbove = document.getText(lineAboveSelectionTextRange);
+         String    lineAbove                   = document.getText(lineAboveSelectionTextRange);
 
          if(lineAbove.matches("^ *//.*"))
          {
@@ -110,7 +110,7 @@ public class CreateBoxCommentAction extends AnAction
       while(selectionEndLine < document.getLineNumber(document.getTextLength()) - 1)
       {
          TextRange lineBelowSelectionTextRange = new TextRange(document.getLineStartOffset(selectionEndLine + 1), document.getLineEndOffset(selectionEndLine + 1));
-         String lineBelow = document.getText(lineBelowSelectionTextRange);
+         String    lineBelow                   = document.getText(lineBelowSelectionTextRange);
 
          if(lineBelow.matches("^ *//.*"))
          {
@@ -125,15 +125,15 @@ public class CreateBoxCommentAction extends AnAction
       //////////////////////////////////////////
       // get the range of text being replaced //
       //////////////////////////////////////////
-      int replacementStartOffset = document.getLineStartOffset(selectionStartLine);
-      int replacementEndOffset = document.getLineEndOffset(selectionEndLine);
-      TextRange textRange = new TextRange(replacementStartOffset, replacementEndOffset);
+      int       replacementStartOffset = document.getLineStartOffset(selectionStartLine);
+      int       replacementEndOffset   = document.getLineEndOffset(selectionEndLine);
+      TextRange textRange              = new TextRange(replacementStartOffset, replacementEndOffset);
 
       ///////////////////////////////////////////////////////////////////////
       // build the replacement text, feeding it the comment-lines as input //
       ///////////////////////////////////////////////////////////////////////
-      String commentLinesText = document.getText(textRange);
-      StringBuilder replacementText = getReplacementText(commentLinesText);
+      String        commentLinesText = document.getText(textRange);
+      StringBuilder replacementText  = getReplacementText(commentLinesText);
 
       //////////////////////////
       // make the replacement //
@@ -155,8 +155,8 @@ public class CreateBoxCommentAction extends AnAction
     *******************************************************************************/
    protected StringBuilder getReplacementText(String commentLinesText)
    {
-      String[] lines = commentLinesText.split("\n");
-      Integer leastIndent = null;
+      String[] lines       = commentLinesText.split("\n");
+      Integer  leastIndent = null;
 
       ///////////////////////////////////////////////////////////////////////////////////////////
       // iterate over the input lines, building a list of lines to be in the replacement text. //
@@ -172,6 +172,11 @@ public class CreateBoxCommentAction extends AnAction
          ////////////////////////////////////////////
          line = line.replaceAll("^( *)/+ *", "$1");
          line = line.replaceAll(" */+ *$", "");
+
+         ////////////////////////////////
+         // strip away trailing spaces //
+         ////////////////////////////////
+         line = line.replaceAll(" *$", "");
 
          ////////////////////////////////////////////////////////////////////////////////////////////////////
          // if the line is empty, and it's the first or last, then assume it was a previous header/footer, //
