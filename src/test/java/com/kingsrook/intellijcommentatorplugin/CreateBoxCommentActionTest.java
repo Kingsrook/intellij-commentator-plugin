@@ -38,10 +38,9 @@ class CreateBoxCommentActionTest
    @Test
    public void testGetReplacementTextSingleLine()
    {
-      String expected = """
-         //////////
-         // Test //
-         //////////""";
+      String expected = "//////////\n" +
+         "// Test //\n" +
+         "//////////";
 
       assertEquals(expected, getReplacementText("Test"));
       assertEquals(expected, getReplacementText("// Test"));
@@ -60,11 +59,9 @@ class CreateBoxCommentActionTest
    @Test
    public void testGetReplacementTextSingleLineIndented()
    {
-      String expected = """
-         .  //////////
-            // Test //
-            //////////"""
-         .replace('.', ' ');
+      String expected = "   //////////\n" +
+         "   // Test //\n" +
+         "   //////////";
 
       assertEquals(expected, getReplacementText("   Test   "));
       assertEquals(expected, getReplacementText("   // Test   "));
@@ -80,52 +77,43 @@ class CreateBoxCommentActionTest
    @Test
    public void testGetReplacementTextMultiLine()
    {
-      String expected = """
-         /////////////
-         // Test    //
-         // In Here //
-         /////////////""";
+      String expected = "/////////////\n" +
+         "// Test    //\n" +
+         "// In Here //\n" +
+         "/////////////";
 
-      assertEquals(expected, getReplacementText("""
-         Test
-         In Here"""));
+      assertEquals(expected, getReplacementText("Test\n" +
+         "In Here"));
 
-      assertEquals(expected, getReplacementText("""
-            // Test        
-            In Here"""));
+      assertEquals(expected, getReplacementText("// Test\n" +
+         "In Here"));
 
-      assertEquals(expected, getReplacementText("""
-            // Test
-            In Here       """));
+      assertEquals(expected, getReplacementText("// Test\n" +
+         "In Here       "));
 
-      assertEquals(expected, getReplacementText("""
-            /////////////
-            // Test    //
-            // In Here //
-            /////////////"""));
+      assertEquals(expected, getReplacementText("/////////////\n" +
+         "// Test    //\n" +
+         "// In Here //\n" +
+         "/////////////"));
 
-      assertEquals(expected, getReplacementText("""
-            /////////////
-            // Test //
-            // In Here //
-            /////////////"""));
+      assertEquals(expected, getReplacementText("/////////////\n" +
+         "// Test //\n" +
+         "// In Here //\n" +
+         "/////////////"));
 
-      assertEquals(expected, getReplacementText("""
-            // Test //
-            // In Here"""));
+      assertEquals(expected, getReplacementText("// Test //\n" +
+         "// In Here"));
 
-      expected = """
-         ////////////////
-         // Test       //
-         //    In Here //
-         ////////////////""";
+      expected = "////////////////\n" +
+         "// Test       //\n" +
+         "//    In Here //\n" +
+         "////////////////";
 
       ////////////////////////////////////////////////////
       // preserve indents on lines after the first line //
       ////////////////////////////////////////////////////
-      assertEquals(expected, getReplacementText("""
-         Test
-            In Here"""));
+      assertEquals(expected, getReplacementText("Test\n" +
+         "   In Here"));
    }
 
 
