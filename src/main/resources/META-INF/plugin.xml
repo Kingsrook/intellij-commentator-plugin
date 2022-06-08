@@ -29,24 +29,52 @@
    <name>Kingsrook Commentator</name>
 
    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-   <vendor email="support@kingsrook.com" url="https://www.kingsrook.com">Kingsrook</vendor>
+   <vendor email="contact@kingsrook.com" url="https://www.kingsrook.com">Kingsrook</vendor>
 
    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
    <description><![CDATA[
-    IntelliJ plugin to provide code editing tools desired by the Kingsrook development team.
+    <h2>Overview</h2>
+    <p>The <b>Kingsrook Commentator</b> is a plugin to provide code editing tools desired by the Kingsrook development team.</p>
     <p>Specifically:</p>
     <ul>
-      <li>Single-button to create a flower-box comment.</li>
+      <li>Single-button to create a flower box comment.</li>
     </ul>
     <p>Future plans may include:</p>
     <ul>
-      <li>Auto-line-re-wrapping for flower-box comments.</li>
+      <li>Auto-line-re-wrapping for flower box comments.</li>
       <li>Class/Method headers.</li>
       <li>Language-aware and/or user-customizable comment-characters</li>
       <li>Smart-case substitutions (e.g., MyVar myVar s/my/your/ = YourVar yourVar).</li>
     </ul>
+    <h2>Usage</h2>
+    <h3>Single-button to create a flower box comment</h3>
+    <p>The Kingsrook coding standard requires full Flower Box comments for all inline source documentation.  However,
+    these can be quite painful to "draw" by-hand.  As such, the Commentator plugin provides a single button that
+    can be pressed (that is, via keyboard shortcut or menu option) to convert one or more lines of text to a properly
+    formatted Flower Box comment, like this:</p>
+    <blockquote>
+    <pre>
+      //////////////////////////////////////////////////////////
+      // This is a beautiful example of a flower box comment! //
+      //////////////////////////////////////////////////////////
+    </pre>
+    </blockquote>
+    <p>In addition, if you edit a comment (adding or removing words, even adding lines), you can reformat your Flower
+    Box with the same action.</p>
+    <p>To use this action to create (or update) a Flower Box comment:</p>
+    <ul>
+      <li>Place your cursor within a line of text that you want to convert into a flower box.  You can have existing
+      comment characters already in the line (e.g., it's common to write the line with a leading <code>//</code>, to
+      prevent the line from being falsely-flagged as a syntax error).  Alternatively, you can select (portions) of one
+      or more lines, if you are making a multi-line comment.</li>
+      <li>To trigger the action, just hit its hotkey / keyboard shortcut.  By default, this is <b>F6</b> (but of course you can
+      customize that under Preferences, Keymap).</li>
+      <li>Alternatively, you can select it from the <b>Code</b> menu:  <b>Create Flower Box Comment</b></li>
+    </ul>
+    <p><i>Note that, at this time, only <code>/</code> (slash) is supported as a comment character.  Future versions of
+    this plugin may include language-specific comment characters, and/or preferences to customize the character used.</i></p>
   ]]></description>
 
    <!-- Product and plugin compatibility requirements.
@@ -59,7 +87,7 @@
 
    </extensions>
    <actions>
-      <action id="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" class="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" text="Create Box Comment" description="Creates a Box Comment (Flowerbox) out of the current line">
+      <action id="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" class="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" text="Create Flower Box Comment" description="Creates a Box Comment (Flowerbox) out of the current line">
          <add-to-group group-id="CodeMenu" anchor="first"/>
          <keyboard-shortcut keymap="$default" first-keystroke="F6"/>
       </action>
