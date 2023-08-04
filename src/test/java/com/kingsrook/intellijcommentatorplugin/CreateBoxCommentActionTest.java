@@ -114,6 +114,31 @@ class CreateBoxCommentActionTest
       ////////////////////////////////////////////////////
       assertEquals(expected, getReplacementText("Test\n" +
          "   In Here"));
+
+      //////////////////////////////////////
+      // avoid index out of bounds error! //
+      //////////////////////////////////////
+      expected = "   /////////////\n" +
+         "   // Test    //\n" +
+         "   //         //\n" +
+         "   // In Here //\n" +
+         "   /////////////";
+
+      assertEquals(expected, getReplacementText("   Test\n" +
+         "\n" +
+         "   In Here"));
+
+      assertEquals(expected, getReplacementText("   Test\n" +
+         " \n" +
+         "   In Here"));
+
+      assertEquals(expected, getReplacementText("   Test\n" +
+         "   \n" +
+         "   In Here"));
+
+      assertEquals(expected, getReplacementText("   Test\n" +
+         "      \n" +
+         "   In Here"));
    }
 
 
@@ -124,7 +149,7 @@ class CreateBoxCommentActionTest
    private String getReplacementText(String input)
    {
       CreateBoxCommentAction action = new CreateBoxCommentAction();
-      String                 output = action.getReplacementText(input).toString();
+      String                 output = action.getReplacementText(input, "/").toString();
 
       System.out.printf("Input:\n%s\nOutput:\n%s\n", input, output);
 

@@ -31,8 +31,10 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 
 
 /*******************************************************************************
@@ -98,6 +100,24 @@ public class CreateBoxCommentAction extends AnAction
       Document       document       = editor.getDocument();
       SelectionModel selectionModel = editor.getSelectionModel();
 
+      String commentChar = "/";
+      try
+      {
+         VirtualFile currentFile = FileDocumentManager.getInstance().getFile(document);
+         if(currentFile != null)
+         {
+            String fileName = currentFile.getPath();
+            if(fileName.endsWith(".sh") || fileName.endsWith(".vtl") || fileName.endsWith(".vm") || fileName.endsWith(".pl"))
+            {
+               commentChar = "#";
+            }
+         }
+      }
+      catch(Exception e)
+      {
+         // leave default
+      }
+
       ////////////////////////////////////////////////////////////////
       // find the start & end lines, based on selection start & end //
       ////////////////////////////////////////////////////////////////
@@ -115,7 +135,7 @@ public class CreateBoxCommentAction extends AnAction
          TextRange lineAboveSelectionTextRange = new TextRange(document.getLineStartOffset(selectionStartLine - 1), document.getLineEndOffset(selectionStartLine - 1));
          String    lineAbove                   = document.getText(lineAboveSelectionTextRange);
 
-         if(lineAbove.matches("^ *//.*"))
+         if(lineAbove.matches("^ *" + commentChar + commentChar + ".*"))
          {
             selectionStartLine--;
          }
@@ -133,7 +153,7 @@ public class CreateBoxCommentAction extends AnAction
          TextRange lineBelowSelectionTextRange = new TextRange(document.getLineStartOffset(selectionEndLine + 1), document.getLineEndOffset(selectionEndLine + 1));
          String    lineBelow                   = document.getText(lineBelowSelectionTextRange);
 
-         if(lineBelow.matches("^ *//.*"))
+         if(lineBelow.matches("^ *" + commentChar + commentChar + ".*"))
          {
             selectionEndLine++;
          }
@@ -154,7 +174,7 @@ public class CreateBoxCommentAction extends AnAction
       // build the replacement text, feeding it the comment-lines as input //
       ///////////////////////////////////////////////////////////////////////
       String        commentLinesText = document.getText(textRange);
-      StringBuilder replacementText  = getReplacementText(commentLinesText);
+      StringBuilder replacementText  = getReplacementText(commentLinesText, commentChar);
 
       //////////////////////////
       // make the replacement //
@@ -174,7 +194,7 @@ public class CreateBoxCommentAction extends AnAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   protected StringBuilder getReplacementText(String commentLinesText)
+   protected StringBuilder getReplacementText(String commentLinesText, String commentChar)
    {
       String[] lines       = commentLinesText.split("\n");
       Integer  leastIndent = null;
@@ -191,8 +211,8 @@ public class CreateBoxCommentAction extends AnAction
          ////////////////////////////////////////////
          // strip away any leading or trailing /'s //
          ////////////////////////////////////////////
-         line = line.replaceAll("^( *)/+ *", "$1");
-         line = line.replaceAll(" */+ *$", "");
+         line = line.replaceAll("^( *)" + commentChar + "+ *", "$1");
+         line = line.replaceAll(" *" + commentChar + "+ *$", "");
 
          ////////////////////////////////
          // strip away trailing spaces //
@@ -278,7 +298,7 @@ public class CreateBoxCommentAction extends AnAction
       StringBuilder topAndBottom = new StringBuilder();
       for(int i = 0; i < longestLength + 6 - leastIndent; i++)
       {
-         topAndBottom.append('/');
+         topAndBottom.append(commentChar);
       }
 
       ////////////////////////////////////////////////////////////////////////
@@ -295,23 +315,22 @@ public class CreateBoxCommentAction extends AnAction
          ///////////////////////////////////////////////////////////////////////////////////////////
          // start with an indent, then comment chars, then the text (minus the leading indention) //
          ///////////////////////////////////////////////////////////////////////////////////////////
-         replacementText.append(indentString).append("// ").append(line.substring(leastIndent));
+         StringBuilder replacementLine = new StringBuilder(indentString).append(commentChar).append(commentChar).append(" ").append(line.substring(Math.min(line.length(), leastIndent)));
 
          //////////////////////////////////////
          // if padding is needed, add it now //
          //////////////////////////////////////
-         if(line.length() < longestLength)
+         while(replacementLine.length() < longestLength + 3)
          {
-            for(int i = line.length(); i < longestLength; i++)
-            {
-               replacementText.append(' ');
-            }
+            replacementLine.append(' ');
          }
 
          /////////////////////////////////////////////
          // finalize with comment chars and newline //
          /////////////////////////////////////////////
-         replacementText.append(" //\n");
+         replacementLine.append(" ").append(commentChar).append(commentChar).append("\n");
+
+            replacementText.append(replacementLine);
       }
 
       //////////////////////////////////////////////////

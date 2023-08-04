@@ -30,7 +30,7 @@ dependencies {
 }
 
 group = "com.kingsrook"
-version = "1.0.0"
+version = "1.4.0"
 
 repositories {
     mavenCentral()
@@ -45,7 +45,7 @@ intellij {
     version.set("2021.2")
     type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("java"))
 }
 
 tasks {
@@ -57,7 +57,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("212")
-        untilBuild.set("222.*")
+        untilBuild.set("500.*")
     }
 
     signPlugin {

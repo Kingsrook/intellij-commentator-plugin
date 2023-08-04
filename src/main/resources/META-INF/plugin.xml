@@ -40,27 +40,29 @@
     <p>Specifically:</p>
     <ul>
       <li>Single-button to create a flower box comment.</li>
+      <li>Smart-case substitutions (e.g., MyVar myVar s/my/your/ = YourVar yourVar).</li>
+      <li>Write missing get/set/with methods for fields.</li>
+      <li>Quickly do a URI decode on selected text.</li>
+      <li>Auto-Import classes or methods that IntelliJ refuses to "just do".</li>
     </ul>
     <p>Future plans may include:</p>
     <ul>
       <li>Auto-line-re-wrapping for flower box comments.</li>
       <li>Class/Method headers.</li>
-      <li>Language-aware and/or user-customizable comment-characters</li>
-      <li>Smart-case substitutions (e.g., MyVar myVar s/my/your/ = YourVar yourVar).</li>
+      <li>Language-aware and/or user-customizable comment-characters.</li>
     </ul>
     <h2>Usage</h2>
+
     <h3>Single-button to create a flower box comment</h3>
     <p>The Kingsrook coding standard requires full Flower Box comments for all inline source documentation.  However,
     these can be quite painful to "draw" by-hand.  As such, the Commentator plugin provides a single button that
     can be pressed (that is, via keyboard shortcut or menu option) to convert one or more lines of text to a properly
     formatted Flower Box comment, like this:</p>
-    <blockquote>
     <pre>
-      //////////////////////////////////////////////////////////
-      // This is a beautiful example of a flower box comment! //
-      //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    // This is a beautiful example of a flower box comment! //
+    //////////////////////////////////////////////////////////
     </pre>
-    </blockquote>
     <p>In addition, if you edit a comment (adding or removing words, even adding lines), you can reformat your Flower
     Box with the same action.</p>
     <p>To use this action to create (or update) a Flower Box comment:</p>
@@ -75,21 +77,77 @@
     </ul>
     <p><i>Note that, at this time, only <code>/</code> (slash) is supported as a comment character.  Future versions of
     this plugin may include language-specific comment characters, and/or preferences to customize the character used.</i></p>
+
+    <h3>Smart-case substitutions (e.g., MyVar myVar s/my/your/ = YourVar yourVar).</h3>
+    <p>A super-common use case (for me, at least) is to want to substitute one word for another, in a camel-case sensitive
+    manner, such that occurrences of the word that start with either an upper or
+    lowercase letter get replaced by the replacement, preserving the case of the initial letter.  (I use the word "substitute"
+    as a reference to VI's <code>:s</code> command, though I suppose Find and Replace is the more common GUI terminology for
+    the concept...)</p>
+    <p>The most common example of this in Java development, is in copying & pasting getter & setter methods (and these days,
+    we tend to also write fluent setters (e.g., <code>withVar</code>)).</p>
+    <p>For example, if you have these methods:<p>
+    <pre>public String getCity()
+{
+   return(city);
+}
+
+public void setCity(String city)
+{
+   this.city = city;
+}
+
+public Address withCity(String city)
+{
+   this.city = city;
+   return (this);
+}
+   </pre>
+   <p>And you want to copy & paste them for a new field, <code>state</code>.  By using <b>SmartSubstitute</b>, your steps to do this
+    would be:</p>
+    <ul>
+    <li>copy the code</li>
+    <li>paste it</li>
+    <li>select the pasted code</li>
+    <li>open <b>SmartSubstitute</b> (from the Edit → Find menu)</li>
+    <li>tell it to replace <u>city</u> with <u>state</u></li>
+    </ul>
+    <p>The result you'll get is, in the selected code, both the literal values you entered for find and replace will be substituted
+    (e.g., "city" for "state", for the variable and field names, that start with lower case letters), and also, automatically
+    <u>City</u> will be replaced with <u>State</u> (e.g., in the method names, for the inner word starting with an upper case letter)
+    - just like you would have wanted!</p>
+
   ]]></description>
 
    <!-- Product and plugin compatibility requirements.
         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
    <depends>com.intellij.modules.platform</depends>
+   <depends>com.intellij.modules.java</depends>
 
    <!-- Extension points defined by the plugin.
         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
    <extensions defaultExtensionNs="com.intellij">
-
+      <notificationGroup id="Kingsrook Commentator Notifications" displayType="BALLOON"/>
    </extensions>
    <actions>
       <action id="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" class="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" text="Create Flower Box Comment" description="Creates a Box Comment (Flowerbox) out of the current line">
          <add-to-group group-id="CodeMenu" anchor="first"/>
          <keyboard-shortcut keymap="$default" first-keystroke="F6"/>
+      </action>
+      <action id="com.kingsrook.intellijcommentatorplugin.SSAction" class="com.kingsrook.intellijcommentatorplugin.SSAction" text="SS - SmartSubstitution" description="Substitution action that is Smart w/r/t capitalization">
+         <add-to-group group-id="FindMenuGroup" anchor="first"/>
+         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt S" />
+      </action>
+      <action id="com.kingsrook.intellijcommentatorplugin.GetSetWithAction" class="com.kingsrook.intellijcommentatorplugin.GetSetWithAction" text="Get, Set, With" description="Write getX, setX, withX methods">
+         <add-to-group group-id="CodeMenu" anchor="last"/>
+         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt w" />
+      </action>
+      <action id="com.kingsrook.intellijcommentatorplugin.URIDecodeAction" class="com.kingsrook.intellijcommentatorplugin.URIDecodeAction" text="URI Decode" description="Do a URI Decode on the selected text.">
+         <add-to-group group-id="CodeMenu" anchor="last"/>
+      </action>
+      <action id="com.kingsrook.intellijcommentatorplugin.MyImporterAction" class="com.kingsrook.intellijcommentatorplugin.MyImporterAction" text="My Importer" description="Import things the way I want you to.">
+         <add-to-group group-id="CodeMenu" anchor="last"/>
+         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt i" />
       </action>
    </actions>
 </idea-plugin>
