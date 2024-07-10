@@ -3,12 +3,9 @@ IntelliJ plugin to provide code editing tools desired by the Kingsrook developme
 
 Specifically:
 - Single-button to create a flower-box comment.
-
-Future plans may include:
-- Auto-line-re-wrapping for flower-box comments.
-- Class/Method headers.
-- Language-aware and/or user-customizable comment-characters
 - Smart-case substitutions (e.g., MyVar myVar s/my/your/ = YourVar yourVar).
+- OK-version of auto-generation of getter, setter, and fluent-setter (wither?) methods
+- Simple decoder of URIs (e.g., to make abc%26123 into abc&123)
 
 ## License
 Kingsrook IntelliJ Commentator Plugin \

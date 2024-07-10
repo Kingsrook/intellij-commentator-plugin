@@ -1,78 +1,69 @@
-/*
- * Kingsrook IntelliJ Commentator Plugin
- * Copyright (C) 2022.  Kingsrook, LLC
- * 651 N Broad St Ste 205 # 6917 | Middletown DE 19709 | United States
- * contact@kingsrook.com
- * https://github.com/Kingsrook/intellij-commentator-plugin
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 plugins {
-    id("java")
-    id("org.jetbrains.intellij") version "1.5.2"
-}
-
-dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+  id("java")
+  id("org.jetbrains.kotlin.jvm") version "1.9.22"
+  id("org.jetbrains.intellij") version "1.17.2"
 }
 
 group = "com.kingsrook"
-version = "1.4.0"
+version = "1.5.0-SNAPSHOT"
 
 repositories {
-    mavenCentral()
-}
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+  mavenCentral()
+      maven {
+          url = uri("https://repo.clojars.org/")
+      }
 }
 
-// Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
+
+// Configure Gradle IntelliJ Plugin
+// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2021.2")
-    type.set("IC") // Target IDE Platform
+  version.set("2024.1")
+  type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf("java"))
+  plugins.set(listOf("com.intellij.java"))
 }
 
 tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
-    }
+  withType<JavaCompile> {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+  }
 
-    patchPluginXml {
-        sinceBuild.set("212")
-        untilBuild.set("500.*")
-    }
+  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
+  }
 
-    signPlugin {
-        // certificateChainFile.set(File(System.getenv("CERTIFICATE_CHAIN_FILE")))
-        // privateKeyFile.set(File(System.getenv("PRIVATE_KEY_FILE")))
-    }
+  patchPluginXml {
+    sinceBuild.set("232")
+    untilBuild.set("242.*")
+  }
 
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
-    }
+  signPlugin {
+    certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
+    privateKey.set(System.getenv("PRIVATE_KEY"))
+    password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+  }
 
-    test {
-        useJUnitPlatform()
-        testLogging {
-            showStandardStreams = true
-        }
-    }
+  publishPlugin {
+    token.set(System.getenv("PUBLISH_TOKEN"))
+  }
+
+  test {
+      useJUnitPlatform()
+  }
+
+  // this option makes it so settings are searchable in the settings dialog
+  // we don't have any at this time, so we don't care.
+  // we're just turing this off, because it's breaking builds with it on for "who knows why"
+  buildSearchableOptions {
+      enabled = false
+  }
+}
+
+dependencies {
+   implementation("clojure-interop:java.awt:1.0.5")
+	testImplementation(platform("org.junit:junit-bom:5.10.2"))
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

@@ -36,15 +36,15 @@ import com.intellij.openapi.util.TextRange;
 /*******************************************************************************
  **
  *******************************************************************************/
-public class URIDecodeAction extends AbstractKRCommentatorEditorAction
+public class WordToSnakeCaseAction extends AbstractKRCommentatorEditorAction
 {
    /*******************************************************************************
     ** Constructor
     **
     *******************************************************************************/
-   public URIDecodeAction()
+   public WordToSnakeCaseAction()
    {
-      super("URIDecode");
+      super("WordToSnakeCase");
    }
 
 
@@ -80,6 +80,7 @@ public class URIDecodeAction extends AbstractKRCommentatorEditorAction
 
          //////////////////////////////////////////
          // get the range of text being replaced //
+         // todo - if a selection range, that whole range, but if just 1 char, then that word
          //////////////////////////////////////////
          int       startOffset = document.getLineStartOffset(selectionStartLine);
          int       endOffset   = document.getLineEndOffset(selectionEndLine);
@@ -119,6 +120,7 @@ public class URIDecodeAction extends AbstractKRCommentatorEditorAction
       StringBuilder rs = new StringBuilder();
       for(int i = 0; i < selectedLinesText.length(); i++)
       {
+         // todo - camelCase to camel_case, etc...
          char c = selectedLinesText.charAt(i);
          if(c == '%' && i < selectedLinesText.length() - 2)
          {

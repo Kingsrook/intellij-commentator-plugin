@@ -49,7 +49,7 @@ import org.apache.commons.lang3.tuple.Pair;
 /*******************************************************************************
  **
  *******************************************************************************/
-public class GetSetWithAction extends AnAction
+public class GetSetWithAction extends AbstractKRCommentatorEditorAction
 {
    /*******************************************************************************
     ** Constructor

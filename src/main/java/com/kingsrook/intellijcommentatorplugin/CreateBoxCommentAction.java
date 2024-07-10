@@ -24,6 +24,7 @@ package com.kingsrook.intellijcommentatorplugin;
 
 import java.util.LinkedList;
 import java.util.List;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -35,12 +36,15 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.impl.cache.CacheUtil;
+import com.kingsrook.intellijcommentatorplugin.utils.CommentUtils;
+import org.jetbrains.annotations.NotNull;
 
 
 /*******************************************************************************
  **
  *******************************************************************************/
-public class CreateBoxCommentAction extends AnAction
+public class CreateBoxCommentAction extends AbstractKRCommentatorEditorAction
 {
 
    /*******************************************************************************
@@ -66,26 +70,6 @@ public class CreateBoxCommentAction extends AnAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   @Override
-   public void update(AnActionEvent event)
-   {
-      ////////////////////////////
-      // Get required data keys //
-      ////////////////////////////
-      final Project project = event.getProject();
-      final Editor  editor  = event.getData(CommonDataKeys.EDITOR);
-
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // Set visibility only in case of existing project and editor and if some text in the editor is selected //
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-      event.getPresentation().setVisible(project != null && editor != null);
-   }
-
-
-
-   /*******************************************************************************
-    **
-    *******************************************************************************/
    public void actionPerformed(AnActionEvent event)
    {
       //////////////////////////////////////////////
@@ -100,68 +84,14 @@ public class CreateBoxCommentAction extends AnAction
       Document       document       = editor.getDocument();
       SelectionModel selectionModel = editor.getSelectionModel();
 
-      String commentChar = "/";
-      try
-      {
-         VirtualFile currentFile = FileDocumentManager.getInstance().getFile(document);
-         if(currentFile != null)
-         {
-            String fileName = currentFile.getPath();
-            if(fileName.endsWith(".sh") || fileName.endsWith(".vtl") || fileName.endsWith(".vm") || fileName.endsWith(".pl"))
-            {
-               commentChar = "#";
-            }
-         }
-      }
-      catch(Exception e)
-      {
-         // leave default
-      }
+      String commentChar = CommentUtils.getCommentChar(document);
 
-      ////////////////////////////////////////////////////////////////
-      // find the start & end lines, based on selection start & end //
-      ////////////////////////////////////////////////////////////////
-      int selectionStartOffset = selectionModel.getSelectionStart();
-      int selectionEndOffset   = selectionModel.getSelectionEnd();
-
-      int selectionStartLine = document.getLineNumber(selectionStartOffset);
-      int selectionEndLine   = document.getLineNumber(selectionEndOffset);
-
-      /////////////////////////////////////////////////////////////////////////
-      // expand the selection upward as long as more comment lines are found //
-      /////////////////////////////////////////////////////////////////////////
-      while(selectionStartLine > 1)
-      {
-         TextRange lineAboveSelectionTextRange = new TextRange(document.getLineStartOffset(selectionStartLine - 1), document.getLineEndOffset(selectionStartLine - 1));
-         String    lineAbove                   = document.getText(lineAboveSelectionTextRange);
-
-         if(lineAbove.matches("^ *" + commentChar + commentChar + ".*"))
-         {
-            selectionStartLine--;
-         }
-         else
-         {
-            break;
-         }
-      }
-
-      ///////////////////////////////////////////////////////////////////////////
-      // expand the selection downward as long as more comment lines are found //
-      ///////////////////////////////////////////////////////////////////////////
-      while(selectionEndLine < document.getLineNumber(document.getTextLength()) - 1)
-      {
-         TextRange lineBelowSelectionTextRange = new TextRange(document.getLineStartOffset(selectionEndLine + 1), document.getLineEndOffset(selectionEndLine + 1));
-         String    lineBelow                   = document.getText(lineBelowSelectionTextRange);
-
-         if(lineBelow.matches("^ *" + commentChar + commentChar + ".*"))
-         {
-            selectionEndLine++;
-         }
-         else
-         {
-            break;
-         }
-      }
+      ////////////////////////////////////////////////////////////////////////
+      // find the start & end lines, based on selection start & end         //
+      // expanded upward & downward as long as more comment lines are found //
+      ////////////////////////////////////////////////////////////////////////
+      int selectionStartLine = CommentUtils.getSelectionStartLine(selectionModel, document, commentChar);
+      int selectionEndLine = CommentUtils.getSelectionEndLine(selectionModel, document, commentChar);
 
       //////////////////////////////////////////
       // get the range of text being replaced //

@@ -22,38 +22,33 @@
 package com.kingsrook.intellijcommentatorplugin;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import com.intellij.openapi.actionSystem.AnAction;
+import java.util.Objects;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.CaretState;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 
 
 /*******************************************************************************
  **
  *******************************************************************************/
-public class SSAction extends AbstractKRCommentatorEditorAction
+public class HeaderCommentAction extends AbstractKRCommentatorEditorAction
 {
-   private String lastFind    = null;
-   private String lastReplace = null;
-
-   private List<FindReplacePair> history = new ArrayList<>();
-
-
 
    /*******************************************************************************
-    ** Constructor
     **
     *******************************************************************************/
-   public SSAction()
+   public HeaderCommentAction()
    {
-      super("SmartSubstitute");
+      super("Write Header Comment");
    }
 
 
@@ -61,33 +56,9 @@ public class SSAction extends AbstractKRCommentatorEditorAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   static class FindReplacePair
+   public HeaderCommentAction(String text)
    {
-      String find;
-      String replace;
-
-
-
-      /*******************************************************************************
-       ** Constructor
-       **
-       *******************************************************************************/
-      public FindReplacePair(String find, String replace)
-      {
-         this.find = find;
-         this.replace = replace;
-      }
-
-
-
-      /*******************************************************************************
-       **
-       *******************************************************************************/
-      @Override
-      public String toString()
-      {
-         return "ss/" + find + "/" + replace + "/g";
-      }
+      super(text);
    }
 
 
@@ -95,27 +66,7 @@ public class SSAction extends AbstractKRCommentatorEditorAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   @Override
    public void actionPerformed(AnActionEvent event)
-   {
-      SSDialogWrapper dialog = new SSDialogWrapper(lastFind, lastReplace, history);
-      dialog.show();
-
-      if(dialog.isOK() && dialog.getFind() != null && dialog.getReplace() != null)
-      {
-         updateDocument(event, dialog.getFind(), dialog.getReplace());
-         lastFind = dialog.getFind();
-         lastReplace = dialog.getReplace();
-         history.add(new FindReplacePair(dialog.getFind(), dialog.getReplace()));
-      }
-   }
-
-
-
-   /*******************************************************************************
-    **
-    *******************************************************************************/
-   private void updateDocument(AnActionEvent event, String find, String replace)
    {
       //////////////////////////////////////////////
       // Get all the required data from data keys //
@@ -129,39 +80,70 @@ public class SSAction extends AbstractKRCommentatorEditorAction
       Document       document       = editor.getDocument();
       SelectionModel selectionModel = editor.getSelectionModel();
 
+      String commentChar          = "*";
+      String prefix               = "/";
+      String suffix               = "/";
+      String subsequentLineIndent = " ";
+      try
+      {
+         VirtualFile currentFile = FileDocumentManager.getInstance().getFile(document);
+         if(currentFile != null)
+         {
+            String fileName = currentFile.getPath();
+            if(fileName.endsWith(".sh") || fileName.endsWith(".vtl") || fileName.endsWith(".vm") || fileName.endsWith(".pl") || fileName.endsWith(".properties"))
+            {
+               commentChar = "#";
+               prefix = "";
+               suffix = "";
+               subsequentLineIndent = "";
+            }
+            else if(fileName.endsWith(".xml") || fileName.endsWith(".html"))
+            {
+               commentChar = "=";
+               prefix = "<!-- ";
+               suffix = " -->";
+               subsequentLineIndent = "";
+            }
+         }
+      }
+      catch(Exception e)
+      {
+         // leave default
+      }
+
       ////////////////////////////////////////////////////////////////
       // find the start & end lines, based on selection start & end //
       ////////////////////////////////////////////////////////////////
       int selectionStartOffset = selectionModel.getSelectionStart();
-      int selectionEndOffset   = selectionModel.getSelectionEnd();
-
-      int selectionStartLine = document.getLineNumber(selectionStartOffset);
-      int selectionEndLine   = document.getLineNumber(selectionEndOffset);
+      int selectionStartLine   = document.getLineNumber(selectionStartOffset);
 
       //////////////////////////////////////////
       // get the range of text being replaced //
       //////////////////////////////////////////
-      int       replacementStartOffset = document.getLineStartOffset(selectionStartLine);
-      int       replacementEndOffset   = document.getLineEndOffset(selectionEndLine);
-      TextRange textRange              = new TextRange(replacementStartOffset, replacementEndOffset);
+      int    replacementPoint = document.getLineStartOffset(selectionStartLine);
+      String selectionLine    = document.getText(new TextRange(document.getLineStartOffset(selectionStartLine), document.getLineEndOffset(selectionStartLine)));
+      String indent           = selectionLine.replaceAll("^( *).*", "$1");
 
       ///////////////////////////////////////////////////////////////////////
       // build the replacement text, feeding it the comment-lines as input //
       ///////////////////////////////////////////////////////////////////////
-      String        selectedLinesText = document.getText(textRange);
-      StringBuilder replacementText   = getReplacementText(selectedLinesText, find, replace);
+      StringBuilder replacementText = getReplacementText(indent, commentChar, prefix, suffix, subsequentLineIndent);
 
       //////////////////////////
       // make the replacement //
       //////////////////////////
       WriteCommandAction.runWriteCommandAction(project, () ->
-         document.replaceString(replacementStartOffset, replacementEndOffset, replacementText)
+         document.replaceString(replacementPoint, replacementPoint, replacementText)
       );
 
       /////////////////////////////////
       // un-select what was selected //
       /////////////////////////////////
-      selectionModel.removeSelection();
+      // selectionModel.removeSelection();
+      // selectionModel.setSelection(replacementPoint, replacementPoint + 1);
+      int    caretPosition = document.getLineStartOffset(selectionStartLine + 1) + indent.length() + subsequentLineIndent.length() + 2;
+      editor.getCaretModel().moveToOffset(caretPosition);
+
    }
 
 
@@ -169,29 +151,38 @@ public class SSAction extends AbstractKRCommentatorEditorAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   private StringBuilder getReplacementText(String text, String find, String replace)
+   protected StringBuilder getReplacementText(String indent, String commentChar, String prefix, String suffix, String subsequentLineIndent)
    {
-      if(text == null || text.trim().length() == 0)
+      int prefixLength = 0;
+
+      StringBuilder rs = new StringBuilder(indent);
+      if(prefix != null)
       {
-         return new StringBuilder(text);
+         rs.append(prefix);
+         prefixLength = prefix.length();
+      }
+      rs.append(commentChar.repeat(76 - prefixLength));
+      rs.append("\n");
+
+      rs.append(indent);
+      rs.append(Objects.requireNonNullElse(subsequentLineIndent, ""));
+      rs.append(commentChar);
+      rs.append(" ");
+      rs.append("\n");
+
+      int suffixLength = suffix == null ? 0 : suffix.length();
+      rs.append(indent);
+      rs.append(Objects.requireNonNullElse(subsequentLineIndent, ""));
+      rs.append(commentChar.repeat(76 - suffixLength));
+
+      if(suffix != null)
+      {
+         rs.append(suffix);
       }
 
-      find = find.trim();
-      String findRest = find.length() > 1 ? find.substring(1) : "";
-      String lc1Find  = find.substring(0, 1).toLowerCase() + findRest;
-      String uc1Find  = find.substring(0, 1).toUpperCase() + findRest;
-      String ucFind   = find.toUpperCase(); // todo - innerCammels to _'s
+      rs.append("\n");
 
-      replace = replace == null ? "" : replace.trim();
-      String replaceRest = replace.length() > 1 ? replace.substring(1) : "";
-      String lc1Replace  = replace.length() == 0 ? "" : (replace.substring(0, 1).toLowerCase() + replaceRest);
-      String uc1Replace  = replace.length() == 0 ? "" : (replace.substring(0, 1).toUpperCase() + replaceRest);
-      String ucReplace   = replace.toUpperCase();
-
-      return new StringBuilder(text
-         .replaceAll(lc1Find, lc1Replace)
-         .replaceAll(uc1Find, uc1Replace)
-         .replaceAll(ucFind, ucReplace)
-      );
+      return (rs);
    }
+
 }

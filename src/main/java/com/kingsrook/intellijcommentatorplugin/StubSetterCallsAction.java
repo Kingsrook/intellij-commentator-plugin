@@ -31,20 +31,27 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiIdentifier;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.search.GlobalSearchScope;
 
 
 /*******************************************************************************
  **
  *******************************************************************************/
-public class URIDecodeAction extends AbstractKRCommentatorEditorAction
+public class StubSetterCallsAction extends AbstractKRCommentatorEditorAction
 {
    /*******************************************************************************
     ** Constructor
     **
     *******************************************************************************/
-   public URIDecodeAction()
+   public StubSetterCallsAction()
    {
-      super("URIDecode");
+      super("StubSetterCalls");
    }
 
 
@@ -81,27 +88,70 @@ public class URIDecodeAction extends AbstractKRCommentatorEditorAction
          //////////////////////////////////////////
          // get the range of text being replaced //
          //////////////////////////////////////////
-         int       startOffset = document.getLineStartOffset(selectionStartLine);
-         int       endOffset   = document.getLineEndOffset(selectionEndLine);
-         TextRange textRange   = new TextRange(startOffset, endOffset);
+         int startOffset = document.getLineStartOffset(selectionStartLine);
+         int endOffset   = document.getLineEndOffset(selectionEndLine);
 
-         ///////////////////////////////////////////////////////////////////////
-         // build the replacement text, feeding it the comment-lines as input //
-         ///////////////////////////////////////////////////////////////////////
-         String        selectedLinesText = document.getText(textRange);
-         StringBuilder replacementText   = getReplacementText(selectedLinesText);
+         String line = document.getText(new TextRange(document.getLineStartOffset(selectionEndLine), document.getLineEndOffset(selectionEndLine)));
+         String leadingWhitespace = line.replaceAll("\\S.*", "");
 
-         //////////////////////////
-         // make the replacement //
-         //////////////////////////
-         WriteCommandAction.runWriteCommandAction(project, () ->
-            document.replaceString(startOffset, endOffset, replacementText)
-         );
+         int     caretOffset = editor.getCaretModel().getOffset();
+         PsiFile psiFile     = event.getData(CommonDataKeys.PSI_FILE);
+         if(psiFile == null)
+         {
+            System.out.println("No PSI file...");
+            return;
+         }
 
-         /////////////////////////////////
-         // un-select what was selected //
-         /////////////////////////////////
-         selectionModel.removeSelection();
+         PsiElement psiElement = psiFile.findElementAt(caretOffset);
+         if(psiElement == null)
+         {
+            System.out.println("No PSI element...");
+            return;
+         }
+
+         if(psiElement instanceof PsiIdentifier)
+         {
+            JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
+            String        className     = javaPsiFacade.getElementFactory().createExpressionFromText(psiElement.getText(), psiElement).getType().getCanonicalText();
+            PsiClass      varClass      = javaPsiFacade.findClass(className, GlobalSearchScope.allScope(project));
+
+            StringBuilder appendText = new StringBuilder("\n");
+            for(PsiMethod method : varClass.getMethods())
+            {
+               if(method.getName().startsWith("set"))
+               {
+                  appendText.append(leadingWhitespace).append(psiElement.getText()).append(".").append(method.getName()).append("();\n");
+               }
+            }
+
+            ///////////////////////////////////////////////////////////////////////
+            // build the replacement text, feeding it the comment-lines as input //
+            ///////////////////////////////////////////////////////////////////////
+            // String selectedLinesText = document.getText(textRange);
+            // String replacementText   = getReplacementText(selectedLinesText);
+
+            //////////////////////////
+            // make the replacement //
+            //////////////////////////
+            // WriteCommandAction.runWriteCommandAction(project, () ->
+            //    document.replaceString(startOffset, endOffset, replacementText)
+            // );
+
+            WriteCommandAction.runWriteCommandAction(project, () ->
+            {
+               document.replaceString(endOffset, endOffset, appendText);
+            });
+
+            /////////////////////////////////
+            // un-select what was selected //
+            /////////////////////////////////
+            selectionModel.removeSelection();
+         }
+         else
+         {
+            System.out.println("Not an identifier...");
+            return;
+         }
       }
       catch(Exception e)
       {
@@ -114,24 +164,9 @@ public class URIDecodeAction extends AbstractKRCommentatorEditorAction
    /*******************************************************************************
     **
     *******************************************************************************/
-   public StringBuilder getReplacementText(String selectedLinesText)
+   public String getReplacementText(String selectedLinesText)
    {
-      StringBuilder rs = new StringBuilder();
-      for(int i = 0; i < selectedLinesText.length(); i++)
-      {
-         char c = selectedLinesText.charAt(i);
-         if(c == '%' && i < selectedLinesText.length() - 2)
-         {
-            String hex         = selectedLinesText.substring(i + 1, i + 3);
-            char   replacement = (char) Integer.parseInt(hex, 16);
-            rs.append(replacement);
-            i += 2;
-         }
-         else
-         {
-            rs.append(c);
-         }
-      }
-      return (rs);
+      System.out.println(selectedLinesText);
+      return (selectedLinesText);
    }
 }

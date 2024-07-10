@@ -48,7 +48,7 @@ import org.apache.commons.lang3.tuple.Pair;
 /*******************************************************************************
  **
  *******************************************************************************/
-public class MyImporterAction extends AnAction
+public class MyImporterAction extends AbstractKRCommentatorEditorAction
 {
    private static Map<String, String> importDefinitions = new HashMap<>();
 
@@ -71,6 +71,7 @@ public class MyImporterAction extends AnAction
 
       importDefinitions.put("assertThat", "static org.assertj.core.api.Assertions.assertThat");
       importDefinitions.put("assertThatThrownBy", "static org.assertj.core.api.Assertions.assertThatThrownBy");
+      importDefinitions.put("File", "java.io.File");
    }
 
 

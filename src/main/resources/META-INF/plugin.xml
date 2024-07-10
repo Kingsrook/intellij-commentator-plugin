@@ -24,6 +24,8 @@
    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
    <id>com.kingsrook.intellij-commentator-plugin</id>
 
+   <version>1.5.0</version>
+
    <!-- Public plugin name should be written in Title Case.
         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
    <name>Kingsrook Commentator</name>
@@ -44,12 +46,12 @@
       <li>Write missing get/set/with methods for fields.</li>
       <li>Quickly do a URI decode on selected text.</li>
       <li>Auto-Import classes or methods that IntelliJ refuses to "just do".</li>
+      <li>Auto-line-re-wrapping for flower box comments.</li>
+      <li>Class/Method headers.</li>
     </ul>
     <p>Future plans may include:</p>
     <ul>
-      <li>Auto-line-re-wrapping for flower box comments.</li>
-      <li>Class/Method headers.</li>
-      <li>Language-aware and/or user-customizable comment-characters.</li>
+      <li>Conversion of words from say this_case or this-case to thisCase or ThisCase or THIS_CASE, etc</li>
     </ul>
     <h2>Usage</h2>
 
@@ -117,6 +119,10 @@ public Address withCity(String city)
     <u>City</u> will be replaced with <u>State</u> (e.g., in the method names, for the inner word starting with an upper case letter)
     - just like you would have wanted!</p>
 
+    <h3>GetSetWith method generation</h3>
+    <p>If you add new fields to a class - you can quickly & easily generate getter, setter, and fluent-setter ("wither") methods,
+    by selecting the lines with the fields, and invoking the <b>GetSetWith</b> command.  It attempts to be smart and not re-generate
+    any that already exist.  Note, it doesn't quite work well for inner-classes.</p>
   ]]></description>
 
    <!-- Product and plugin compatibility requirements.
@@ -124,30 +130,54 @@ public Address withCity(String city)
    <depends>com.intellij.modules.platform</depends>
    <depends>com.intellij.modules.java</depends>
 
+   <idea-version since-build="222.3345.118"/>
+
    <!-- Extension points defined by the plugin.
         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
    <extensions defaultExtensionNs="com.intellij">
       <notificationGroup id="Kingsrook Commentator Notifications" displayType="BALLOON"/>
    </extensions>
+
+   <extensions defaultExtensionNs="com.intellij">
+      <applicationService serviceImplementation="com.kingsrook.intellijcommentatorplugin.settings.CommentatorSettingsState"/>
+   </extensions>
+
+   <extensions defaultExtensionNs="com.intellij">
+      <applicationConfigurable
+            parentId="tools"
+            instance="com.kingsrook.intellijcommentatorplugin.settings.CommentatorSettingsConfigurable"
+            id="org.intellij.sdk.settings.AppSettingsConfigurable"
+            displayName="Kingsrook Commentator"/>
+   </extensions>
+
    <actions>
-      <action id="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" class="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" text="Create Flower Box Comment" description="Creates a Box Comment (Flowerbox) out of the current line">
-         <add-to-group group-id="CodeMenu" anchor="first"/>
-         <keyboard-shortcut keymap="$default" first-keystroke="F6"/>
-      </action>
-      <action id="com.kingsrook.intellijcommentatorplugin.SSAction" class="com.kingsrook.intellijcommentatorplugin.SSAction" text="SS - SmartSubstitution" description="Substitution action that is Smart w/r/t capitalization">
-         <add-to-group group-id="FindMenuGroup" anchor="first"/>
-         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt S" />
-      </action>
-      <action id="com.kingsrook.intellijcommentatorplugin.GetSetWithAction" class="com.kingsrook.intellijcommentatorplugin.GetSetWithAction" text="Get, Set, With" description="Write getX, setX, withX methods">
-         <add-to-group group-id="CodeMenu" anchor="last"/>
-         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt w" />
-      </action>
-      <action id="com.kingsrook.intellijcommentatorplugin.URIDecodeAction" class="com.kingsrook.intellijcommentatorplugin.URIDecodeAction" text="URI Decode" description="Do a URI Decode on the selected text.">
-         <add-to-group group-id="CodeMenu" anchor="last"/>
-      </action>
-      <action id="com.kingsrook.intellijcommentatorplugin.MyImporterAction" class="com.kingsrook.intellijcommentatorplugin.MyImporterAction" text="My Importer" description="Import things the way I want you to.">
-         <add-to-group group-id="CodeMenu" anchor="last"/>
-         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt i" />
-      </action>
+      <group id="com.kingsrook.intellijcommentatorplugin.KingsrookCommentatorGroup" text="Kingsrook Commentator" popup="true" icon="/META-INF/pluginMenuIcon.svg">
+         <add-to-group group-id="ToolsMenu" anchor="last"/>
+         <action id="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" class="com.kingsrook.intellijcommentatorplugin.CreateBoxCommentAction" text="Create Flower Box Comment" description="Creates a Box Comment (Flowerbox) out of the current line">
+            <keyboard-shortcut keymap="$default" first-keystroke="F6"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.WrapCommentAction" class="com.kingsrook.intellijcommentatorplugin.WrapCommentAction" text="Wrap Flower Box Comment" description="Wrap a Box Comment (Flowerbox) that got too long">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl F5"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.HeaderCommentAction" class="com.kingsrook.intellijcommentatorplugin.HeaderCommentAction" text="Write Header Comment" description="Write a stub of a method/class/etc header comment">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt m"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.CaseChangerAction" class="com.kingsrook.intellijcommentatorplugin.CaseChangerAction" text="Case Changer" description="Change the capitalization style of the word under the cursor">
+            <keyboard-shortcut keymap="$default" first-keystroke="alt C"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.SSAction" class="com.kingsrook.intellijcommentatorplugin.SSAction" text="SS - SmartSubstitution" description="Substitution action that is Smart w/r/t capitalization">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt S"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.GetSetWithAction" class="com.kingsrook.intellijcommentatorplugin.GetSetWithAction" text="Get, Set, With" description="Write getX, setX, withX methods">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt w"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.MyImporterAction" class="com.kingsrook.intellijcommentatorplugin.MyImporterAction" text="My Importer" description="Import things the way I want you to.">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt i"/>
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.URIDecodeAction" class="com.kingsrook.intellijcommentatorplugin.URIDecodeAction" text="URI Decode" description="Do a URI Decode on the selected text.">
+         </action>
+         <action id="com.kingsrook.intellijcommentatorplugin.StubSetterCallsAction" class="com.kingsrook.intellijcommentatorplugin.StubSetterCallsAction" text="Stub Setter Calls" description="Write a stub of calls to all setters on an object">
+         </action>
+      </group>
    </actions>
 </idea-plugin>

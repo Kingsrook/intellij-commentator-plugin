@@ -28,8 +28,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.List;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,29 +43,32 @@ import org.jetbrains.annotations.Nullable;
  *******************************************************************************/
 public class SSDialogWrapper extends DialogWrapper
 {
-   private final String initialFindText;
-   private final String initialReplaceText;
+   private final String                         initialFindText;
+   private final String                         initialReplaceText;
+   private final List<SSAction.FindReplacePair> history;
 
    private String find;
    private String replace;
 
-   private JTextField findText;
-   private JTextField replaceText;
+   private JTextField                         findText;
+   private JTextField                         replaceText;
+   private ComboBox<SSAction.FindReplacePair> historyCombo;
 
 
 
    /*******************************************************************************
     **
     *******************************************************************************/
-   public SSDialogWrapper(String initialFindText, String initialReplaceText)
+   public SSDialogWrapper(String initialFindText, String initialReplaceText, List<SSAction.FindReplacePair> history)
    {
       super(true);
 
       this.initialFindText = initialFindText;
       this.initialReplaceText = initialReplaceText;
+      this.history = history;
 
       setTitle("SmartSubstitute");
-      setSize(350, 155);
+      setSize(350, 190); // todo - was 155
       init();
    }
 
@@ -86,6 +93,9 @@ public class SSDialogWrapper extends DialogWrapper
    {
       JPanel dialogPanel = new JPanel();
 
+      ////////////////////////
+      // find label & field //
+      ////////////////////////
       JLabel findLabel = new JLabel("Find:");
       findLabel.setPreferredSize(new Dimension(60, 30));
       dialogPanel.add(findLabel);
@@ -99,6 +109,9 @@ public class SSDialogWrapper extends DialogWrapper
       }
       dialogPanel.add(findText);
 
+      ///////////////////////////
+      // replace label & field //
+      ///////////////////////////
       JLabel replaceLabel = new JLabel("Replace:");
       replaceLabel.setPreferredSize(findLabel.getPreferredSize());
       dialogPanel.add(replaceLabel);
@@ -112,20 +125,63 @@ public class SSDialogWrapper extends DialogWrapper
       }
       dialogPanel.add(replaceText);
 
+      ///////////////////////////
+      // history label & field //
+      ///////////////////////////
+      JLabel historyLabel = new JLabel("History:");
+      historyLabel.setPreferredSize(findLabel.getPreferredSize());
+      dialogPanel.add(historyLabel);
+
+      historyCombo = new ComboBox<>(history.stream().toArray(SSAction.FindReplacePair[]::new));
+      if(history.size() > 0)
+      {
+         historyCombo.setItem(history.get(history.size() - 1));
+      }
+      historyCombo.setPreferredSize(findText.getPreferredSize());
+      historyCombo.addActionListener(new ActionListener()
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            SSAction.FindReplacePair item = historyCombo.getItem();
+            if(item != null)
+            {
+               findText.setText(item.find);
+               replaceText.setText(item.replace);
+            }
+         }
+      });
+      dialogPanel.add(historyCombo);
+
       SpringLayout layout = new SpringLayout();
       dialogPanel.setLayout(layout);
       int padding = 6;
+
+      /////////////////////////////
+      // place find label & text //
+      /////////////////////////////
       layout.putConstraint(SpringLayout.WEST, findLabel, padding, SpringLayout.WEST, dialogPanel);
       layout.putConstraint(SpringLayout.NORTH, findLabel, padding, SpringLayout.NORTH, dialogPanel);
 
       layout.putConstraint(SpringLayout.WEST, findText, padding, SpringLayout.EAST, findLabel);
       layout.putConstraint(SpringLayout.NORTH, findText, padding, SpringLayout.NORTH, dialogPanel);
 
+      ////////////////////////////////
+      // place replace label & text //
+      ////////////////////////////////
       layout.putConstraint(SpringLayout.WEST, replaceLabel, padding, SpringLayout.WEST, dialogPanel);
       layout.putConstraint(SpringLayout.NORTH, replaceLabel, padding, SpringLayout.SOUTH, findLabel);
 
       layout.putConstraint(SpringLayout.WEST, replaceText, padding, SpringLayout.EAST, replaceLabel);
       layout.putConstraint(SpringLayout.NORTH, replaceText, padding, SpringLayout.SOUTH, findText);
+
+      ////////////////////////////////
+      // place history label & text //
+      ////////////////////////////////
+      layout.putConstraint(SpringLayout.WEST, historyLabel, padding, SpringLayout.WEST, dialogPanel);
+      layout.putConstraint(SpringLayout.NORTH, historyLabel, padding, SpringLayout.SOUTH, replaceLabel);
+
+      layout.putConstraint(SpringLayout.WEST, historyCombo, padding, SpringLayout.EAST, historyLabel);
+      layout.putConstraint(SpringLayout.NORTH, historyCombo, padding, SpringLayout.SOUTH, replaceText);
 
       return (dialogPanel);
    }
